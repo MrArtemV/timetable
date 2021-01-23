@@ -1,0 +1,87 @@
+body {
+	background: #b3e3c0;
+	min-height: 2000px;
+}
+
+h2 {
+	margin-bottom: 0;
+}
+
+section {
+	margin-bottom: 20px;
+	border-radius: 10%;
+}
+
+main > .row {
+	margin: 80px 0;
+}
+
+.theme-toggler {
+	visibility: visible;
+	color: white;
+	transition: 0.3s;
+}
+
+.theme-toggler.active {
+	color: rgba(255,255,255,.5);
+}
+
+.header {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.title {
+	color: #dcdcdc;
+    padding: 10px 0px;
+    font-size: 1.8rem;
+}
+
+.main {
+	background: white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.point {
+	margin: 0 10px;
+    border-top: 1px solid #939e96;
+    padding: 0.7rem 0;
+}
+
+.point:nth-child(1) {
+	border-top: none;
+}
+
+.point_desc {
+	font-family: 'Montserrat', sans-serif;
+	display: inline-block;
+	font-weight: 500;
+	font-style: italic;
+    margin-left: 20px;
+    vertical-align: middle;
+    font-size: 1.1rem;
+    color: #706d60;
+
+}
+
+.point_title {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.time {
+	font-size: 0.7rem;
+}
+
+.name {
+	font-size: 1.4rem;
+	margin-bottom: 0;
+}
+
+@media screen and (max-width: 991px) {
+	.theme-toggler {
+		visibility: hidden;
+		display: none;
+	}	
+}
