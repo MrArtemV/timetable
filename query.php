@@ -1,7 +1,7 @@
 <?php
 	require_once 'db_connect.php';
 
-	function now_day($pdo)
+	function get_now_day($pdo)
 	{
 		$now = date('Y-m-d', time());
 		$query = "SELECT * FROM day";
@@ -19,21 +19,27 @@
 		$query = "SELECT * FROM subject";
 		$cat = $pdo->query($query);
 		while ($subject = $cat->fetch()) {
-			$name = $subject['name'];
+			$name[] = $subject['name'];
 		}
 		return $name[$id - 1];
 
 	}
+	echo get_subject($pdo, 3);
 
 	function get_dow($pdo, $id) {
-		$query = "SELECT * FROM day";
+		$query = "SELECT DAYOFWEEK(date) as dow FROM day";
 		$cat = $pdo->query($query);
 		while ($date = $cat->fetch()) {
-			$exp = explode('-', $date['date']);
-			$year = $exp[0];
-			$month = $exp[1];
-			$day = $exp[2];
-			$dow[] = date('l', mktime(0, 0, 0, $month, $day, $year));
+			switch ($date['dow']) {
+				case '1': $dow[] = "Понедельник"; 	break;
+				case '2': $dow[] = "Вторник"; 		break;
+				case '3': $dow[] = "Среда"; 		break;
+				case '4': $dow[] = "Четверг"; 		break;
+				case '5': $dow[] = "Пятница"; 		break;
+				case '6': $dow[] = "Суббота"; 		break;
+				case '7': $dow[] = "Воскресенье"; 	break;
+				default:  $dow[] = "NULL"; 			break;
+			}
 		}
 		return $dow[$id - 1];
 	}
