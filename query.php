@@ -20,11 +20,17 @@
 		$cat = $pdo->query($query);
 		while ($subject = $cat->fetch()) {
 			$name[] = $subject['name'];
+			$iddb[] = $subject['id'];
 		}
-		return $name[$id - 1];
-
+		foreach ($id as $value) {
+			for ($i=0; $i < count($iddb); $i++) {
+				if ($value == $iddb[$i]) {
+					$subjlist[] = $name[$value -1];
+				}
+			}
+		}
+		return $subjlist;
 	}
-	echo get_subject($pdo, 3);
 
 	function get_dow($pdo, $id) {
 		$query = "SELECT DAYOFWEEK(date) as dow FROM day";
