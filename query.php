@@ -44,7 +44,7 @@
 				case '5': $dow[] = "Пятница"; 		break;
 				case '6': $dow[] = "Суббота"; 		break;
 				case '7': $dow[] = "Воскресенье"; 	break;
-				default:  $dow[] = "NULL"; 			break;
+				default:  $dow[] = "NULL"; 		break;
 			}
 		}
 		return $dow[$id - 1];
