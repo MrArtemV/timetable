@@ -49,4 +49,10 @@
 		}
 		return $dow[$id - 1];
 	}
+	function print_subjects($list)
+	{
+		foreach ($list as $value) {
+            echo "<div class='point'><div class='point_title'><p class='name'>" . $value ."</p><i class='time'>9:00 - 9:45</i></div><div class='point_desc'><p>Сделать дз</p></div></div>";
+            };
+	}
 ?>
