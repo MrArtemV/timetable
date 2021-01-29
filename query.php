@@ -13,6 +13,52 @@
 			}
 		}
 	}
+	$nday = get_now_day($pdo);
+
+
+
+	function get_dow($pdo, $id) {
+		$query = "SELECT DAYOFWEEK(date) as dow FROM day";
+		$cat = $pdo->query($query);
+		while ($date = $cat->fetch()) {
+			switch ($date['dow']) {
+				case '1': $dow[] = "Воскресенье"; 	break;
+				case '2': $dow[] = "Понедельник"; 	break;
+				case '3': $dow[] = "Вторник"; 		break;
+				case '4': $dow[] = "Среда"; 		break;
+				case '5': $dow[] = "Четверг"; 		break;
+				case '6': $dow[] = "Пятница"; 		break;
+				case '7': $dow[] = "Суббота"; 		break;
+				default:  $dow[] = "NULL"; 			break;
+			}
+		}
+		return $dow[$id - 1];
+	}
+
+
+
+	function get_compare ($pdo, $day_id) {
+		$query = "SELECT * FROM `subjects_in_day` WHERE `day_id` = $day_id";
+		$cat = $pdo->query($query);
+		while ($res = $cat->fetch()) {
+			$data[] = $res;
+		}
+		return $data;
+	}
+	$compare = get_compare($pdo, $nday + $j);
+
+
+
+	function get_sid($c)
+	{
+		foreach ($c as $value) {
+			$sid[] = $value['subject_id'];
+		}
+		return $sid;
+	};
+	$sid = get_sid($compare);
+
+
 
 	function get_subject($pdo, $id)
 	{
@@ -31,24 +77,9 @@
 		}
 		return $subjlist;
 	}
+	$subj = get_subject($pdo, $sid);
 
-	function get_dow($pdo, $id) {
-		$query = "SELECT DAYOFWEEK(date) as dow FROM day";
-		$cat = $pdo->query($query);
-		while ($date = $cat->fetch()) {
-			switch ($date['dow']) {
-				case '1': $dow[] = "Понедельник"; 	break;
-				case '2': $dow[] = "Вторник"; 		break;
-				case '3': $dow[] = "Среда"; 		break;
-				case '4': $dow[] = "Четверг"; 		break;
-				case '5': $dow[] = "Пятница"; 		break;
-				case '6': $dow[] = "Суббота"; 		break;
-				case '7': $dow[] = "Воскресенье"; 	break;
-				default:  $dow[] = "NULL"; 		break;
-			}
-		}
-		return $dow[$id - 1];
-	}
+
 	function print_subjects($list)
 	{
 		foreach ($list as $value) {
