@@ -45,7 +45,7 @@
 		}
 		return $data;
 	}
-	$compare = get_compare($pdo, $nday + $j);
+	$compare = get_compare($pdo, $nday);
 
 
 
@@ -57,6 +57,17 @@
 		return $sid;
 	};
 	$sid = get_sid($compare);
+
+
+
+	function get_tid($c)
+	{
+		foreach ($c as $value) {
+			$tid[] = $value['time_id'];
+		}
+		return $tid;
+	}
+	$tid = get_tid($compare);
 
 
 
@@ -80,10 +91,42 @@
 	$subj = get_subject($pdo, $sid);
 
 
-	function print_subjects($list)
+
+	function get_time($pdo, $id)
 	{
-		foreach ($list as $value) {
-            echo "<div class='point'><div class='point_title'><p class='name'>" . $value ."</p><i class='time'>9:00 - 9:45</i></div><div class='point_desc'><p>Сделать дз</p></div></div>";
-            };
+		$query = "SELECT * FROM time";
+		$cat = $pdo->query($query);
+		while ($data = $cat->fetch()) {
+			$start[] = $data['start'];
+			$end[] = $data['end'];
+			$iddb[] = $data['id'];
+		}
+		foreach ($id as $value) {
+			for ($i=0; $i < count($iddb); $i++) {
+				if ($value == $iddb[$i]) {
+					$timelist['start'][] = $start[$value -1];
+					$timelist['end'][] = $end[$value - 1];
+				}
+			}
+		}
+		return $timelist;
+	}
+	$time = get_time($pdo, $tid);
+
+
+
+	function print_subjects($subjlist, $time)
+	{
+		
+		if ($subjlist == NULL) {
+			echo "<div class='point'><div class='point_title'><p class='name'> Выходной </p><i class='time'></i></div><div class='point_desc'><p></p></div></div>";
+		}
+		else {
+			$start = $time['start'];
+			$end = $time['end'];
+			foreach ($subjlist as $value) {
+            	echo "<div class='point'><div class='point_title'><p class='name'>" . $value ."</p><i class='time'>$start[0] - $end[0]</i></div><div class='point_desc'><p>Сделать дз</p></div></div>";
+        	};
+		}
 	}
 ?>

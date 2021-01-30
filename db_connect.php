@@ -1,5 +1,5 @@
 <?php
-	$dsn = 'mysql:host=localhost;dbname=datetable';
+	$dsn = 'mysql:host=localhost;dbname=timetable';
 	$user = 'root';
 	$pass = '';
 
