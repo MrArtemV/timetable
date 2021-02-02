@@ -37,7 +37,7 @@
 
 
 
-	function get_compare ($pdo, $day_id) {
+	function get_main ($pdo, $day_id) {
 		$query = "SELECT * FROM `subjects_in_day` WHERE `day_id` = $day_id";
 		$cat = $pdo->query($query);
 		while ($res = $cat->fetch()) {
@@ -45,7 +45,7 @@
 		}
 		return $data;
 	}
-	$compare = get_compare($pdo, $nday);
+	$main = get_main($pdo, $nday);
 
 
 
@@ -56,7 +56,7 @@
 		}
 		return $sid;
 	};
-	$sid = get_sid($compare);
+	$sid = get_sid($main);
 
 
 
@@ -67,7 +67,7 @@
 		}
 		return $tid;
 	}
-	$tid = get_tid($compare);
+	$tid = get_tid($main);
 
 
 
@@ -115,17 +115,60 @@
 
 
 
-	function print_subjects($subjlist, $time)
+	function get_homework($pdo, $day_id)
 	{
-		
+		$query = "SELECT homework FROM day WHERE id = $day_id";
+		$cat = $pdo->query($query);
+		while ($data = $cat->fetch()) {
+			$homework = $data['homework'];
+		}
+		$exp = explode('^^^', $homework);
+		for ($i=0; $i < count($exp); $i++) { 
+			$exp2[] = explode(':::', $exp[$i]);
+		}
+		foreach ($exp2 as $value) {
+			$complete[$value['0']] = $value['1'];
+		}
+		return $complete;
+	}
+	$hw = get_homework($pdo, $nday);
+
+
+
+	function processing_homework($pdo, $homework)
+	{
+		$query = "SELECT * FROM subject";
+		$cat = $pdo->query($query);
+
+		while ($data = $cat->fetch()) {
+			foreach ($homework as $key => $value) {
+				if ($key == $data['id']) {
+					$proc[$data['name']] = $value;
+				}
+			}
+		}
+		return $proc;
+	}
+	$homework = processing_homework($pdo, $hw);
+
+
+
+	function print_subjects($subjlist, $time, $homework)
+	{
 		if ($subjlist == NULL) {
 			echo "<div class='point'><div class='point_title'><p class='name'> Выходной </p><i class='time'></i></div><div class='point_desc'><p></p></div></div>";
 		}
 		else {
-			$start = $time['start'];
-			$end = $time['end'];
-			foreach ($subjlist as $value) {
-            	echo "<div class='point'><div class='point_title'><p class='name'>" . $value ."</p><i class='time'>$start[0] - $end[0]</i></div><div class='point_desc'><p>Сделать дз</p></div></div>";
+			$count = count($subjlist);
+			for ($i=0; $i < $count; $i++) {
+				$data[$i]['subject'] = $subjlist[$i];
+				$data[$i]['start'] = $time['start'][$i];
+				$data[$i]['end'] = $time['end'][$i];
+				$data[$i]['homework'] = $homework[$data[$i]['subject']];
+			}
+			//echo "<pre>"; print_r($data); echo "</pre>";
+			foreach ($data as $value) {
+            	echo "<div class='point'><div class='point_title'><p class='name'>" . $value['subject'] . "</p><i class='time'>" . $value['start'] . " - " .$value['end'] . "</i></div><div class='point_desc'><p>" . $value['homework'] . "</p></div></div>";
         	};
 		}
 	}
