@@ -4,14 +4,13 @@
 	function get_now_day($pdo)
 	{
 		$now = date('Y-m-d', time());
-		$query = "SELECT * FROM day";
+		$query = "SELECT `id` FROM `day` WHERE `date` = CURRENT_DATE()";
+		//$query = "SELECT * FROM day";
 		$cat = $pdo->query($query);
-		while ($res = $cat->fetch()) {
-			if ($res['date'] == $now) {
-				$lid = $res['id'];
-				return $lid;
-			}
-		}
+		/*while ($res = $cat->fetch()) {
+			$date = $res['id'];
+		}*/
+		return $cat->fetch(PDO::FETCH_ASSOC)['id'];
 	}
 	$nday = get_now_day($pdo);
 
@@ -152,9 +151,10 @@
 	$homework = processing_homework($pdo, $hw);
 
 
-
+	//print_r($time);
 	function print_subjects($subjlist, $time, $homework)
 	{
+
 		if ($subjlist == NULL) {
 			echo "<div class='point'><div class='point_title'><p class='name'> Выходной </p><i class='time'></i></div><div class='point_desc'><p></p></div></div>";
 		}
