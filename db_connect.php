@@ -1,7 +1,7 @@
 <?php
-	$dsn = 'mysql:host=localhost;dbname=timetable';
-	$user = 'root';
-	$pass = '';
+	$dsn = 'mysql:host=t92139pd.beget.tech;dbname=t92139pd_imetabl';
+	$user = 't92139pd_imetabl';
+	$pass = 'K_rZ2aVV!';
 
 	try {
 		$pdo = new PDO($dsn, $user, $pass);	

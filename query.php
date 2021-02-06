@@ -1,22 +1,40 @@
 <?php
 	require_once 'db_connect.php';
 
+	
+
 	function get_now_day($pdo)
 	{
-		$now = date('Y-m-d', time());
-		$query = "SELECT `id` FROM `day` WHERE `date` = CURRENT_DATE()";
-		//$query = "SELECT * FROM day";
+		$now = date('Y-m-d');
+		$query = "SELECT `id` FROM `day` WHERE `date` = '$now'";
 		$cat = $pdo->query($query);
-		/*while ($res = $cat->fetch()) {
-			$date = $res['id'];
-		}*/
 		return $cat->fetch(PDO::FETCH_ASSOC)['id'];
 	}
 	$nday = get_now_day($pdo);
 
 
 
-	function get_dow($pdo, $id) {
+	function get_all($pdo, $day_id)
+	{
+		$query = "SELECT day.date, subject.name, time.start, time.end, subject.teacher, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id INNER JOIN time ON subjects_in_day.time_id = time.id WHERE day_id = $day_id ORDER BY day.id";
+		$cat = $pdo->query($query);
+		while ($result = $cat->fetch(PDO::FETCH_ASSOC)) {
+			$data[] = $result;
+		}
+		return $data;
+	}
+	$data = get_all($pdo, $nday);
+
+
+
+	function print_subjects($data)
+	{
+		if (is_null($data)) {
+			echo "Выходной";			
+		}
+	}
+	print_subjects($data);
+	/*function get_dow($pdo, $id) {
 		$query = "SELECT DAYOFWEEK(date) as dow FROM day";
 		$cat = $pdo->query($query);
 		while ($date = $cat->fetch()) {
@@ -171,5 +189,5 @@
             	echo "<div class='point'><div class='point_title'><p class='name'>" . $value['subject'] . "</p><i class='time'>" . $value['start'] . " - " .$value['end'] . "</i></div><div class='point_desc'><p>" . $value['homework'] . "</p></div></div>";
         	};
 		}
-	}
+	}*/
 ?>
