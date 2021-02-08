@@ -1,0 +1,25 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+
+body.dark {
+	background-color: #434845;
+}
+
+body.dark .main {
+	background-color: #393a39;
+}
+
+body.dark .name {
+	color: #acb8ca;
+}
+
+body.dark .time {
+	color: #acb8ca;
+}
+
+body.dark .header.bg-secondary {
+	background-color: #3d4348 !important;
+}

@@ -1,13 +1,6 @@
         <footer></footer>
         
-        <script>
-            let themetoggler = document.querySelector('.theme-toggler');
-            let page = document.querySelector('#content');
-            themetoggler.onclick = function () {
-                themetoggler.classList.toggle('active');
-                page.classList.toggle('dark')
-            }
-        </script>
+        <script src="dark.js"></script>
 
         <!-- Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

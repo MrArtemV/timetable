@@ -17,6 +17,7 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="dark.css">
         <title>Главная</title>
     </head>
     <body id="content">
