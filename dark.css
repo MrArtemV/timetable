@@ -12,6 +12,10 @@ body.dark .main {
 	background-color: #393a39;
 }
 
+body.dark .login {
+	background-color: #393a39;
+}
+
 body.dark .name {
 	color: #acb8ca;
 }
@@ -22,4 +26,12 @@ body.dark .time {
 
 body.dark .header.bg-secondary {
 	background-color: #3d4348 !important;
+}
+
+body.dark .col-form-label {
+	color: #ffffff;
+}
+
+body.dark .display-4.text-center {
+	color: #ffffff;
 }

@@ -1,6 +1,6 @@
 <?php
     require_once 'db_connect.php';
-    require 'query.php';
+    require_once 'query.php';
     include 'header.php';
 ?>
         <main class="container">

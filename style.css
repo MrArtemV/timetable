@@ -70,18 +70,15 @@ main > .row {
 .point_title {
 	display: inline-block;
 	vertical-align: middle;
-	transition: 0.3s;
 }
 
 .time {
 	font-size: 0.7rem;
-	transition: 0.3s;
 }
 
 .name {
 	font-size: 1.4rem;
 	margin-bottom: 0;
-	transition: 0.3s;
 }
 
 .login {
@@ -97,6 +94,11 @@ main > .row {
 .form-group {
 	margin: 1rem 0;
 }
+
+.col-form-label, .display-4.text-center, .name, .login, .time, .point_title {
+	transition: 0.3s;
+}
+
 
 @media screen and (max-width: 991px) {
 	.theme-toggler {

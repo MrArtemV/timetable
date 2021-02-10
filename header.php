@@ -25,7 +25,7 @@
             <nav class="container navbar navbar-expand-lg bg-faded">
                 
                 <!-- Бренд -->
-                <a class="navbar-brand justify-content-around" href="#">Логотип</a>
+                <a class="navbar-brand justify-content-around" href="index.php">Логотип</a>
                 <!-- Ссылки -->
                 <div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Переключатель навигации"><span class="navbar-toggler-icon"></span>
@@ -35,14 +35,26 @@
                 <div class="collapse navbar-collapse justify-content-center" id="nav-content">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Ссылка 1</a>
+                            <a class="nav-link" href="https://vk.com/club186200039">Группа ВК</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Ссылка 2</a>
+                            <a class="nav-link" href="subjlist.php">Предметы</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Ссылка 3</a>
+                            <?php
+                                if ($_SESSION['user'] == NULL) {
+                                    echo "<a class='nav-link' href='login.php'>Войти</a>";
+                                }
+                                else {
+                                    echo "<a class='nav-link' href='exit.php'>Выйти</a>";
+                                }
+                            ?>
                         </li>
+                        <?php
+                            if ($_SESSION['user'] != NULL) {
+                                echo "<li class='nav-item'><a class='nav-link' href='admin.php'>Панель управления</a></li>";
+                            }
+                        ?>
                     </ul>
                 </div>
                 <div class="theme-toggler justify-content-end">
