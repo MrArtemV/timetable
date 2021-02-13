@@ -24,6 +24,14 @@ body.dark .time {
 	color: #acb8ca;
 }
 
+body.dark h1.title {
+	color: #dcdcdc;
+}
+
+body.dark p.point_desc {
+	color: #dcdcdc	;
+}
+
 body.dark .header.bg-secondary {
 	background-color: #3d4348 !important;
 }

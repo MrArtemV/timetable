@@ -19,7 +19,7 @@
 	// Собирает нужную информацию: дату, название урока, время начала урока, время конца урока, домашку
 	function get_all($pdo, $day_id)
 	{
-		$query = "SELECT day.date, subject.name, time.start, time.end, subject.teacher, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id INNER JOIN time ON subjects_in_day.time_id = time.id WHERE day_id = $day_id ORDER BY day.id";
+		$query = "SELECT day.date, subject.name, time.start, time.end, subject.teacher, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id INNER JOIN time ON subjects_in_day.time_id = time.id WHERE day_id = $day_id";
 		$cat = $pdo->query($query);
 		while ($result = $cat->fetch(PDO::FETCH_ASSOC)) {
 			$data[] = $result;
@@ -58,7 +58,7 @@
 		}
 		else {
 			foreach ($data as $value) {
-				echo "<div class='point'><div class='point_title'><p class='name'>" . $value['name'] . "</p><i class='time'>" . $value['start'] . " - " .$value['end'] . "</i></div><div class='point_desc'><p>" . $value['homework'] . "</p></div></div>";
+				echo "<div class='point'><div class='point_title'><p class='name'>" . $value['name'] . "</p><i class='time'>" . $value['start'] . " - " .$value['end'] . "</i></div><div class='point_desc'><i>" . $value['homework'] . "</i></div></div>";
 			}
 		}
 	}
@@ -83,6 +83,18 @@
 			else {
 				return "Неправильный пароль!";
 			}
+		}
+	}
+
+
+
+	//Изменение данных введёного дня
+	function print_day_edit_menu($pdo, $date)
+	{
+		$query = "SELECT subject.name, time.start, time.end, subject.teacher, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id INNER JOIN time ON subjects_in_day.time_id = time.id WHERE day_id = (SELECT id FROM day WHERE date = '$date')";
+		$cat = $pdo->query($query);
+		while ($res = $cat->fetch()) {
+			echo "Урок: {$res['name']}, Начало: {$res['start']}, Конец: {$res['end']}, Учитель: {$res['teacher']}, ДЗ: {$res['homework']}<br>";
 		}
 	}
 ?>

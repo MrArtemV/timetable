@@ -40,6 +40,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="subjlist.php">Предметы</a>
                         </li>
+                        <?php
+                            if ($_SESSION['user'] != NULL) {
+                                echo "<li class='nav-item'><a class='nav-link' href='admin.php'>Панель управления</a></li>";
+                            }
+                        ?>
                         <li class="nav-item">
                             <?php
                                 if ($_SESSION['user'] == NULL) {
@@ -50,11 +55,9 @@
                                 }
                             ?>
                         </li>
-                        <?php
-                            if ($_SESSION['user'] != NULL) {
-                                echo "<li class='nav-item'><a class='nav-link' href='admin.php'>Панель управления</a></li>";
-                            }
-                        ?>
+                        <div class="nav-item mob_toggler">
+                            <p class="nav-link">Сменить тему</p>
+                        </div>
                     </ul>
                 </div>
                 <div class="theme-toggler justify-content-end">

@@ -34,7 +34,7 @@
 		    		<div class="form-group row">
 		      			<div class="offset-3 col-9">
 		        		<button type="submit" class="btn btn-primary">Отправить</button>
-		        		<p><?=$mes?></p>
+		        		<p class="point_desc danger"><?=$mes?></p>
 		     		</div>
 		    		</div>
 				</form>
