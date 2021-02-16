@@ -24,7 +24,6 @@ themetoggler.onclick = function () {
 }
 
 mobtoggler.onclick = function () {
-	//console.log('click');
 	let dark = localStorage.getItem('dark');
 	if (dark == 'true' ) {
 		dark = false;

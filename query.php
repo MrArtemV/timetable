@@ -19,7 +19,7 @@
 	// Собирает нужную информацию: дату, название урока, время начала урока, время конца урока, домашку
 	function get_all($pdo, $day_id)
 	{
-		$query = "SELECT day.date, subject.name, time.start, time.end, subject.teacher, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id INNER JOIN time ON subjects_in_day.time_id = time.id WHERE day_id = $day_id";
+		$query = "SELECT day.date, subject.name, time.start, time.end, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id INNER JOIN time ON subjects_in_day.time_id = time.id WHERE day_id = $day_id";
 		$cat = $pdo->query($query);
 		while ($result = $cat->fetch(PDO::FETCH_ASSOC)) {
 			$data[] = $result;
@@ -50,6 +50,45 @@
 
 
 
+	function get_subject($pdo)
+	{
+		$query = "SELECT subject.name FROM subject";
+		$cat = $pdo->query($query);
+		while ($res = $cat->fetch()) {
+			$data[] = $res['name'];
+		}
+		return $data;
+	}
+	$sublist = get_subject($pdo);
+
+
+
+	function get_start_time($pdo)
+	{
+		$query = "SELECT time.start FROM time";
+		$cat = $pdo->query($query);
+		while ($res = $cat->fetch()) {
+			$data[] = $res['start'];
+		}
+		return $data;
+	}
+	$timelist_s = get_start_time($pdo);
+
+
+
+	function get_end_time($pdo)
+	{
+		$query = "SELECT time.end FROM time";
+		$cat = $pdo->query($query);
+		while ($res = $cat->fetch()) {
+			$data[] = $res['end'];
+		}
+		return $data;
+	}
+	$timelist_e = get_end_time($pdo);
+
+
+
 	// Выводит список информации с применением Bootstrap
 	function print_subjects($data)
 	{
@@ -76,12 +115,13 @@
 		$query = "SELECT name, password FROM users WHERE name = '$name'";
 		$cat = $pdo->query($query);
 		while ($res = $cat->fetch()) {
-			if ($name == $res['name'] && md5($pass) == $res['password']) {
-				$_SESSION['user'] = $name;
-				header("Location: http://$host$uri/$extra");
+			if ($name != $res['name'] || md5($pass) != $res['password']) {
+				return "Неправильное имя или пароль!";
 			}
 			else {
-				return "Неправильный пароль!";
+				$_SESSION['user'] = $name;
+				echo $_SESSION['name'];
+				header("Location: http://$host$uri/$extra");
 			}
 		}
 	}
@@ -89,12 +129,29 @@
 
 
 	//Изменение данных введёного дня
-	function print_day_edit_menu($pdo, $date)
+	function print_day_edit_menu($pdo, $date, $sublist, $timelist_s, $timelist_e)
 	{
-		$query = "SELECT subject.name, time.start, time.end, subject.teacher, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id INNER JOIN time ON subjects_in_day.time_id = time.id WHERE day_id = (SELECT id FROM day WHERE date = '$date')";
+		$query = "SELECT COUNT(`subject_id`) as 'count' FROM `subjects_in_day` WHERE `day_id` = (SELECT day.id FROM day WHERE day.date = '$date')";
 		$cat = $pdo->query($query);
-		while ($res = $cat->fetch()) {
-			echo "Урок: {$res['name']}, Начало: {$res['start']}, Конец: {$res['end']}, Учитель: {$res['teacher']}, ДЗ: {$res['homework']}<br>";
+		$count = $cat->fetch(PDO::FETCH_ASSOC)['count'];
+		echo "<form>";
+		for ($i=0; $i < $count; $i++) {
+
+			echo "<div class='form-group underline'><div class='row ml-1 mr-1 '><div class='col-lg-2'><p class='name'>Выберите урок:</p></div><div class='col-lg-2'><select class='form-control'>";
+			for ($j=0; $j < count($sublist); $j++) { 
+				echo "<option value='{$sublist[$j]}'>{$sublist[$j]}</option>";
+			}
+			echo "</select></div><div class='col-lg-3'><p class='name'>Выберите начало урока:</p><select>";
+			for ($j=0; $j < count($timelist_s); $j++) { 
+				echo "<option value='{$timelist_s[$j]}'>{$timelist_s[$j]}</option>";
+			}
+			echo "</select></div><div class='col-lg-3'><p class='name'>Выберите конец урока:</p><select>";
+			for ($j=0; $j < count($timelist_e); $j++) { 
+				echo "<option value='{$timelist_e[$j]}'>{$timelist_e[$j]}</option>";
+			}
+			echo "</select></div><div class='col-lg-2'><p class='name'>ДЗ</p><textarea></textarea></div></div></div><br>";
+
 		}
+		echo "</form>";
 	}
 ?>
