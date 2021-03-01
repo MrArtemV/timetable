@@ -17,6 +17,8 @@
 	}
 	elseif ($_REQUEST['subject0'] != NULL) {
 		
+		$date = $_REQUEST['date'];
+		insert_data($pdo, $_REQUEST, $date);
 	}
-	
+	include "footer.php";
 ?>

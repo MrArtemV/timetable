@@ -134,20 +134,26 @@
 		$query = "SELECT COUNT(`subject_id`) as 'count' FROM `subjects_in_day` WHERE `day_id` = (SELECT day.id FROM day WHERE day.date = '$date')";
 		$cat = $pdo->query($query);
 		$count = $cat->fetch(PDO::FETCH_ASSOC)['count'];
-		echo "<form action='insert.php' method='POST'>";
+		echo "<form action='insert.php' method='POST'><input type='hidden' name='date' value='$date'>";
 		for ($i=0; $i < $count; $i++) {
 
 			echo "<div class='form-group underline'><div class='row ml-1 mr-1'><div class='col-lg-3'><p class='name'>Выберите урок:</p><select class='form-control' name='subject$i'>";
 			for ($j=0; $j < count($sublist); $j++) { 
-				echo "<option value='{$sublist[$j]}'>{$sublist[$j]}</option>";
+				echo "<option value='";
+				echo $j+1;
+				echo "'>{$sublist[$j]}</option>";
 			}
 			echo "</select></div><div class='col-lg-3'><p class='name'>Выберите начало урока:</p><select class='form-control' name='ts$i'>";
 			for ($j=0; $j < count($timelist_s); $j++) { 
-				echo "<option value='{$timelist_s[$j]}'>{$timelist_s[$j]}</option>";
+				echo "<option value='";
+				echo $j+1;
+				echo "'>{$timelist_s[$j]}</option>";
 			}
 			echo "</select></div><div class='col-lg-3'><p class='name'>Выберите конец урока:</p><select class='form-control' name='te$i'>";
-			for ($j=0; $j < count($timelist_e); $j++) { 
-				echo "<option value='{$timelist_e[$j]}'>{$timelist_e[$j]}</option>";
+			for ($j=1; $j <= count($timelist_e); $j++) { 
+				echo "<option value='";
+				echo $j+1;
+				echo "'>{$timelist_e[$j]}</option>";
 			}
 			echo "</select></div><div class='col-lg-3'><p class='name'>ДЗ</p><textarea class='form-control' name='hw$i'></textarea></div></div></div><br>";
 
@@ -157,10 +163,22 @@
 
 
 
-	function insert_data($pdo, $data)
+	function insert_data($pdo, $data, $date)
 	{
-		if ($data['subject0'] != null) {
-			//$query = "SELECT ";
+		$check_query = "SELECT * FROM subjects_in_day WHERE day_id = (SELECT id FROM day WHERE day.date = '$date')";
+		$cat = $pdo->query($check_query);
+		$pre_res = $cat->fetch();
+
+		if ($pre_res) {
+			$del_query = "DELETE FROM `subjects_in_day` WHERE `subjects_in_day`.`day_id` = (SELECT day.id FROM day WHERE day.date = '$date');";
+			$cat = $pdo->exec($del_query);
+			if ($cat) {
+				$query = "INSERT INTO subjects_in_day VALUES (NULL, (SELECT day.id FROM day WHERE day.date = '$date'), '', '', '');";
+			}
 		}
+		elseif (!$pre_res) {
+			
+		}
+		
 	}
 ?>
