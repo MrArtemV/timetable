@@ -128,8 +128,15 @@
 
 
 
+	function check_day($date)
+	{
+		$query = "SELECT COUNT(*) >0 as 'workday' FROM subjects_in_day WHERE day_id = (SELECT `id` FROM day WHERE `date` = '2021-03-14') AND subject_id IS NOT NULL";
+	}
+
+
+
 	//Изменение данных введёного дня
-	function print_day_edit_menu($pdo, $date, $sublist, $timelist_s, $timelist_e)
+	/*function print_day_edit_menu($pdo, $date, $sublist, $timelist_s, $timelist_e)
 	{
 		$query = "SELECT COUNT(`subject_id`) as 'count' FROM `subjects_in_day` WHERE `day_id` = (SELECT day.id FROM day WHERE day.date = '$date')";
 		$cat = $pdo->query($query);
@@ -159,26 +166,7 @@
 
 		}
 		echo "<button type='submit' class='btn btn-primary mb-1 ml-1 '>отправить</button></form>";
-	}
+	}*/
 
 
-
-	function insert_data($pdo, $data, $date)
-	{
-		$check_query = "SELECT * FROM subjects_in_day WHERE day_id = (SELECT id FROM day WHERE day.date = '$date')";
-		$cat = $pdo->query($check_query);
-		$pre_res = $cat->fetch();
-
-		if ($pre_res) {
-			$del_query = "DELETE FROM `subjects_in_day` WHERE `subjects_in_day`.`day_id` = (SELECT day.id FROM day WHERE day.date = '$date');";
-			$cat = $pdo->exec($del_query);
-			if ($cat) {
-				$query = "INSERT INTO subjects_in_day VALUES (NULL, (SELECT day.id FROM day WHERE day.date = '$date'), '', '', '');";
-			}
-		}
-		elseif (!$pre_res) {
-			
-		}
-		
-	}
 ?>
