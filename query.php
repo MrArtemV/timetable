@@ -59,15 +59,15 @@
 		}
 		$time = time();
 		$data['timestamp'] = $time;
-		$json = json_encode($data);
+		$json = json_encode($data, JSON_PRETTY_PRINT);
 		$f = fopen('subjects.json', 'w') or die("ERROR");
 		fwrite($f, $json);
 		fclose($f);		
 	}
-	
 
 
-	function get_subject()
+
+	function get_subject($pdo)
 	{
 		$ntime = time();
 		$f = fopen('subjects.json', 'r');
@@ -80,7 +80,7 @@
 		unset($data['timestamp']);
 		return $data;
 	}
-	$sublist = get_subject();
+	$sublist = get_subject($pdo);
 	
 
 
