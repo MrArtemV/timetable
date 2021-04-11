@@ -162,50 +162,31 @@
 
 
 	// вывод меню для редактирования дня
-	function print_day_edit_menu($pdo, $filled, $sublist, $timelist_s, $timelist_e)
+	function print_day_edit_menu($pdo, $filled, $sublist, $timelist_s, $timelist_e, $date)
 	{
-		if ($filled == 0) {
-			echo "<form action='insert.php' method='POST'>";
-			echo "";
-			echo "</form>";
+		if ($filled) {
+			echo "
+				<form action='insert.php' method='POST'>
+					<input type='hidden' name='date' value='$date'>
+					<div class='form-group underline' id='form'>
+						<div class='row ml-1 mr-1'>
+							<div class='col-lg-4'>
+								<p class='name'>Выберите номер урока:</p>
+								<select class='form-control' name='subject[]'></select>
+							</div>
+							<div class='col-lg-4'>
+								<p class='name'>Выберите время урока:</p>
+								<select class='form-control' name='subject[]'></select>
+							</div>
+							<div class='col-lg-4'>
+								<p class='name'>ДЗ:</p>
+								<textarea class='form-control' name='hw[]'></textarea>
+							</div>
+						</div>
+					</div>
+					<button type='submit' class='btn btn-primary mb-1 mr-3 float-right'>отправить</button>
+				</form>
+			<button class='btn btn-primary mb-1 ml-3' id='new_row' title='добавить строку'>+</button>";
 		}
-		/*echo $filled . "<br>";
-		echo "<pre>"; print_r($sublist); echo "</pre>";
-		echo "<pre>"; print_r($timelist_s); echo "</pre>";
-		echo "<pre>"; print_r($timelist_e); echo "</pre>";*/
 	}
-	//Изменение данных введёного дня
-	/*function print_day_edit_menu($pdo, $date, $sublist, $timelist_s, $timelist_e)
-	{
-		$query = "SELECT COUNT(`subject_id`) as 'count' FROM `subjects_in_day` WHERE `day_id` = (SELECT day.id FROM day WHERE day.date = '$date')";
-		$cat = $pdo->query($query);
-		$count = $cat->fetch(PDO::FETCH_ASSOC)['count'];
-		echo "<form action='insert.php' method='POST'><input type='hidden' name='date' value='$date'>";
-		for ($i=0; $i < $count; $i++) {
-
-			echo "<div class='form-group underline'><div class='row ml-1 mr-1'><div class='col-lg-3'><p class='name'>Выберите урок:</p><select class='form-control' name='subject$i'>";
-			for ($j=0; $j < count($sublist); $j++) { 
-				echo "<option value='";
-				echo $j+1;
-				echo "'>{$sublist[$j]}</option>";
-			}
-			echo "</select></div><div class='col-lg-3'><p class='name'>Выберите начало урока:</p><select class='form-control' name='ts$i'>";
-			for ($j=0; $j < count($timelist_s); $j++) { 
-				echo "<option value='";
-				echo $j+1;
-				echo "'>{$timelist_s[$j]}</option>";
-			}
-			echo "</select></div><div class='col-lg-3'><p class='name'>Выберите конец урока:</p><select class='form-control' name='te$i'>";
-			for ($j=1; $j <= count($timelist_e); $j++) { 
-				echo "<option value='";
-				echo $j+1;
-				echo "'>{$timelist_e[$j]}</option>";
-			}
-			echo "</select></div><div class='col-lg-3'><p class='name'>ДЗ</p><textarea class='form-control' name='hw$i'></textarea></div></div></div><br>";
-
-		}
-		echo "<button type='submit' class='btn btn-primary mb-1 ml-1 '>отправить</button></form>";
-	}*/
-
-
 ?>
