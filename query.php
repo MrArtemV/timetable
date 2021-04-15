@@ -66,6 +66,12 @@
 	}
 
 
+	function cache_time($value='')
+	{
+		# code...
+	}
+
+
 
 	function get_subject($pdo)
 	{
@@ -81,7 +87,6 @@
 		return $data;
 	}
 	$sublist = get_subject($pdo);
-	
 
 
 
@@ -153,7 +158,7 @@
 	// проверка дня на заполненность
 	function check_day($pdo, $date)
 	{
-		$query = "SELECT COUNT(*) > 0 AS 'filled' FROM subjects_in_day WHERE day_id = (SELECT day.id FROM `day` WHERE day.date = '2021-04-05') AND subject_id IS NOT NULL";
+		$query = "SELECT COUNT(*) > 0 AS 'filled' FROM subjects_in_day WHERE day_id = (SELECT day.id FROM `day` WHERE day.date = '$date') AND subject_id IS NOT NULL";
 		$cat = $pdo->query($query);
 		$res = $cat->fetch(PDO::FETCH_ASSOC)['filled'];
 		return $res;
@@ -164,19 +169,23 @@
 	// вывод меню для редактирования дня
 	function print_day_edit_menu($pdo, $filled, $sublist, $timelist_s, $timelist_e, $date)
 	{
-		if ($filled) {
+		if (true) {
 			echo "
 				<form action='insert.php' method='POST'>
 					<input type='hidden' name='date' value='$date'>
-					<div class='form-group underline' id='form'>
-						<div class='row ml-1 mr-1'>
+					<div class='form-group' id='form'>
+						<div class='row ml-1 mr-1 underline'>
 							<div class='col-lg-4'>
-								<p class='name'>Выберите номер урока:</p>
-								<select class='form-control' name='subject[]'></select>
+								<p class='name'>Выберите урок:</p>
+								<select class='form-control' name='subject[]' id='sub'>";
+								for ($i=0; $i < count($sublist); $i++) { 
+									echo "<option value='$i'>". $sublist[$i] . "</option>";
+								}
+								echo "</select>
 							</div>
 							<div class='col-lg-4'>
-								<p class='name'>Выберите время урока:</p>
-								<select class='form-control' name='subject[]'></select>
+								<p class='name'>Выберите номер урока:</p>
+								<select class='form-control' name='time[]'></select>
 							</div>
 							<div class='col-lg-4'>
 								<p class='name'>ДЗ:</p>
@@ -184,9 +193,9 @@
 							</div>
 						</div>
 					</div>
-					<button type='submit' class='btn btn-primary mb-1 mr-3 float-right'>отправить</button>
+					<button type='submit' class='btn btn-primary mb-2 mr-3 float-right'>отправить</button>
 				</form>
-			<button class='btn btn-primary mb-1 ml-3' id='new_row' title='добавить строку'>+</button>";
+			<button class='btn btn-primary mb-2 ml-3' id='new_row' title='добавить строку'>+</button>";
 		}
 	}
 ?>

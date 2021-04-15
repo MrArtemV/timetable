@@ -151,6 +151,7 @@ p.nav-link{
 .underline {
 	border-top: 1px solid grey;
 	padding-top: 20px;
+	padding-bottom: 20px;
 }
 
 .underline:nth-child(1) {
