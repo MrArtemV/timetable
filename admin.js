@@ -5,15 +5,11 @@ baton.onclick = function () {
 	count = count + 1
 	row.innerHTML += `
 			<div class='row ml-1 mr-1 underline'>
-				<div class='col-lg-4'>
+				<div class='col-lg-6'>
 					<p class='name'>Выберите урок:</p>
 					<select class='form-control' name='subject[]' id='sub`+ count +`'></select>
 				</div>
-				<div class='col-lg-4'>
-					<p class='name'>Выберите время урока:</p>
-					<select class='form-control' name='time[]'></select>
-				</div>
-				<div class='col-lg-4'>
+				<div class='col-lg-6'>
 					<p class='name'>ДЗ:</p>
 					<textarea class='form-control' name='hw[]'></textarea>
 				</div>

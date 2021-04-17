@@ -66,12 +66,6 @@
 	}
 
 
-	function cache_time($value='')
-	{
-		# code...
-	}
-
-
 
 	function get_subject($pdo)
 	{
@@ -87,32 +81,6 @@
 		return $data;
 	}
 	$sublist = get_subject($pdo);
-
-
-
-	function get_start_time($pdo)
-	{
-		$query = "SELECT time.start FROM time";
-		$cat = $pdo->query($query);
-		while ($res = $cat->fetch()) {
-			$data[] = $res['start'];
-		}
-		return $data;
-	}
-	$timelist_s = get_start_time($pdo);
-
-
-
-	function get_end_time($pdo)
-	{
-		$query = "SELECT time.end FROM time";
-		$cat = $pdo->query($query);
-		while ($res = $cat->fetch()) {
-			$data[] = $res['end'];
-		}
-		return $data;
-	}
-	$timelist_e = get_end_time($pdo);
 
 
 
@@ -167,15 +135,17 @@
 
 
 	// вывод меню для редактирования дня
-	function print_day_edit_menu($pdo, $filled, $sublist, $timelist_s, $timelist_e, $date)
+	function print_day_edit_menu($pdo, $filled, $sublist, $date)
 	{
-		if (true) {
+		if (!$filled) {
 			echo "
+				<p class='point_desc'>Предупреждение: данный день ещё не был заполнен. Вы заполняете этот день впервые!</p>
 				<form action='insert.php' method='POST'>
 					<input type='hidden' name='date' value='$date'>
+					<input type='hidden' name='filled' value='0'>
 					<div class='form-group' id='form'>
 						<div class='row ml-1 mr-1 underline'>
-							<div class='col-lg-4'>
+							<div class='col-lg-6'>
 								<p class='name'>Выберите урок:</p>
 								<select class='form-control' name='subject[]' id='sub'>";
 								for ($i=0; $i < count($sublist); $i++) { 
@@ -183,11 +153,7 @@
 								}
 								echo "</select>
 							</div>
-							<div class='col-lg-4'>
-								<p class='name'>Выберите номер урока:</p>
-								<select class='form-control' name='time[]'></select>
-							</div>
-							<div class='col-lg-4'>
+							<div class='col-lg-6'>
 								<p class='name'>ДЗ:</p>
 								<textarea class='form-control' name='hw[]'></textarea>
 							</div>
@@ -196,6 +162,17 @@
 					<button type='submit' class='btn btn-primary mb-2 mr-3 float-right'>отправить</button>
 				</form>
 			<button class='btn btn-primary mb-2 ml-3' id='new_row' title='добавить строку'>+</button>";
+		}
+	}
+
+
+
+	function insert($data)
+	{
+		echo "<pre>"; print_r($data); echo "</pre>";
+		if (!$filled) {
+			$query = "INSERT INTO subjects_in_day VALUES";
+			// cumming soon...
 		}
 	}
 ?>
