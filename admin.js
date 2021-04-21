@@ -30,7 +30,7 @@ async function get_sub_json (count) {
 	    	let arr = Object.values(data)
 	    	delete arr[arr.length - 1]
 	    	for (var i = 0; i < arr.length - 1; i++) {
-	    		qbo.innerHTML += '<option>'+ arr[i]+'</option>';
+	    		qbo.innerHTML += '<option value="'+ i +'">'+ arr[i]+'</option>';
 	    	}
 	    }
 	)

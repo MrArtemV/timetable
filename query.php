@@ -163,16 +163,29 @@
 				</form>
 			<button class='btn btn-primary mb-2 ml-3' id='new_row' title='добавить строку'>+</button>";
 		}
+		else {
+			echo "coming soon...";
+		}
 	}
 
 
 
-	function insert($data)
+	function insert($data, $pdo)
 	{
-		echo "<pre>"; print_r($data); echo "</pre>";
+		/*echo "<pre>"; print_r($data); echo "</pre>";*/
 		if (!$filled) {
 			$query = "INSERT INTO subjects_in_day VALUES";
-			// cumming soon...
+			for ($i=0; $i < count($data['subject']); $i++) { 
+				$query .= "(NULL, (SELECT day.id FROM day WHERE day.date = '{$data['date']}')," . ($data['subject'][$i] +1) . "," . ($i+1) . " , '{$data['hw'][$i]}'),";
+			}
+			$query = rtrim($query, ',');
+			$cat = $pdo->prepare($query);
+			$cat->execute();
+
+			/*$host  = $_SERVER['HTTP_HOST'];
+			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+			$extra = 'index.php';
+			header("Location: http://$host$uri/$extra");*/
 		}
 	}
 ?>

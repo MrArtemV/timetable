@@ -21,7 +21,7 @@
 					<div class="col-lg-12">
 						<div class="main round pad_b_10">
 						<?php
-							insert($_REQUEST);
+							insert($_REQUEST, $pdo);
 						?>
 						</div>
 					</div>
