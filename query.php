@@ -139,7 +139,7 @@
 	{
 		if (!$filled) {
 			echo "
-				<p class='point_desc'>Предупреждение: данный день ещё не был заполнен. Вы заполняете этот день впервые!</p>
+				<p class='point_desc'>Предупреждение: данный день ещё не был заполнен. Он заполняется впервые!</p>
 				<form action='insert.php' method='POST'>
 					<input type='hidden' name='date' value='$date'>
 					<input type='hidden' name='filled' value='0'>
@@ -148,8 +148,8 @@
 							<div class='col-lg-6'>
 								<p class='name'>Выберите урок:</p>
 								<select class='form-control' name='subject[]' id='sub'>";
-								for ($i=0; $i < count($sublist); $i++) { 
-									echo "<option value='$i'>". $sublist[$i] . "</option>";
+								foreach ($sublist as $i => $item) {
+									echo "<option value='$i'>$item</option>"; 
 								}
 								echo "</select>
 							</div>
@@ -164,7 +164,11 @@
 			<button class='btn btn-primary mb-2 ml-3' id='new_row' title='добавить строку'>+</button>";
 		}
 		else {
-			echo "coming soon...";
+			$query = "SELECT subject.id, subject.name, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id WHERE day_id = (SELECT day.id FROM day WHERE day.date = '2021-04-20')";
+			$cat = $pdo->query($query);
+			while ($res = $cat->fetch(PDO::FETCH_ASSOC)) {
+				echo "<p class='point_desc'>Предупреждение: данный день уже был отредактирован.  Он заполняется НЕ впервые!</p>";
+			}
 		}
 	}
 
