@@ -25,7 +25,7 @@
             <nav class="container navbar navbar-expand-lg bg-faded">
                 
                 <!-- Бренд -->
-                <a class="navbar-brand justify-content-around" href="index.php">Логотип</a>
+                <a class="navbar-brand justify-content-around" href="http://<?= $_SERVER['HTTP_HOST']?>">Расписание</a>
                 <!-- Ссылки -->
                 <div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="nav-content" aria-expanded="false" aria-label="Переключатель навигации"><span class="navbar-toggler-icon"></span>
@@ -36,9 +36,6 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="https://vk.com/club186200039">Группа ВК</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="subjlist.php">Предметы</a>
                         </li>
                         <?php
                             if ($_SESSION['user'] != NULL) {

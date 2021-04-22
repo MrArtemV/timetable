@@ -60,7 +60,7 @@
 		$time = time();
 		$data['timestamp'] = $time;
 		$json = json_encode($data, JSON_PRETTY_PRINT);
-		$f = fopen('subjects.json', 'w') or die("ERROR");
+		$f = @fopen('subjects.json', 'w') or die("ERROR");
 		fwrite($f, $json);
 		fclose($f);		
 	}
@@ -70,7 +70,7 @@
 	function get_subject($pdo)
 	{
 		$ntime = time();
-		$f = fopen('subjects.json', 'r');
+		$f = @fopen('subjects.json', 'r');
 		$json = fread($f, filesize('subjects.json'));
 		$data = json_decode($json, true);
 		$timediff = $ntime - $data['timestamp'];
@@ -164,11 +164,25 @@
 			<button class='btn btn-primary mb-2 ml-3' id='new_row' title='добавить строку'>+</button>";
 		}
 		else {
-			$query = "SELECT subject.id, subject.name, subjects_in_day.homework FROM subjects_in_day INNER JOIN day ON subjects_in_day.day_id = day.id INNER JOIN subject ON subjects_in_day.subject_id = subject.id WHERE day_id = (SELECT day.id FROM day WHERE day.date = '2021-04-20')";
+			echo "<p class='point_desc'>Предупреждение: данный день уже был отредактирован.  Он заполняется НЕ впервые!</p>
+			<form action='insert.php' method='POST'>
+				<input type='hidden' name='date' value='$date'>
+				<input type='hidden' name='filled' value='1'>
+				<div class='form-group' id='form'>";
+			$query = "SELECT subject.id, subjects_in_day.homework FROM subjects_in_day INNER JOIN subject ON subjects_in_day.subject_id = subject.id WHERE day_id = (SELECT day.id FROM day WHERE day.date = '$date')";
 			$cat = $pdo->query($query);
 			while ($res = $cat->fetch(PDO::FETCH_ASSOC)) {
-				echo "<p class='point_desc'>Предупреждение: данный день уже был отредактирован.  Он заполняется НЕ впервые!</p>";
+				echo "<div class='row ml-1 mr-1 underline'>
+						<div class='col-lg-6'>
+							<p class='name'>Выберите урок:</p>
+							<select class='form-control' name='subject[]' id='sub'>";
+				foreach ($sublist as $i => $item) {
+					if (($i+1) == $res['id']) echo "<option value='".($i+1) ."' selected>$item</option>";
+					else echo "<option value='".($i+1)."'>$item</option>";
+				}
+				echo "</select></div><div class='col-lg-6'><p class='name'>ДЗ:</p><textarea class='form-control' name='hw[]'>". $res['homework'] ."</textarea></div></div>";
 			}
+			echo "</div><button type='submit' class='btn btn-primary mb-2 ml-3'>отправить</button></form>";
 		}
 	}
 
@@ -176,20 +190,24 @@
 
 	function insert($data, $pdo)
 	{
-		/*echo "<pre>"; print_r($data); echo "</pre>";*/
-		if (!$filled) {
+		if (!$data['filled']) {
 			$query = "INSERT INTO subjects_in_day VALUES";
 			for ($i=0; $i < count($data['subject']); $i++) { 
-				$query .= "(NULL, (SELECT day.id FROM day WHERE day.date = '{$data['date']}')," . ($data['subject'][$i] +1) . "," . ($i+1) . " , '{$data['hw'][$i]}'),";
+				$query .= "(NULL, (SELECT day.id FROM day WHERE day.date = '{$data['date']}')," . ($data['subject'][$i] +1) . "," . ($i+1) . " , '".htmlspecialchars($data['hw'][$i])."'),";
 			}
 			$query = rtrim($query, ',');
 			$cat = $pdo->prepare($query);
 			$cat->execute();
-
-			/*$host  = $_SERVER['HTTP_HOST'];
-			$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-			$extra = 'index.php';
-			header("Location: http://$host$uri/$extra");*/
+			echo "<h1 class='text-center title'> День успешно отредактирован</h1><p class='point_desc'>Теперь вы можете перейти <a href='http://" . $_SERVER['HTTP_HOST'] ."'>на главную</a></p>";
+		}
+		else {
+			$query = "";
+			for ($i=0; $i < count($data['subject']); $i++) { 
+				$query .="UPDATE `subjects_in_day` SET `subject_id` ='". $data['subject'][$i] . "', `homework` ='" . htmlspecialchars($data['hw'][$i]) ."' WHERE `day_id` = (SELECT day.id FROM day WHERE day.date = '{$data['date']}') AND `time_id` = '" . ($i+1) ."'; ";
+			}
+			$cat = $pdo->prepare($query);
+			$cat->execute();
+			echo "<h1 class='text-center title'> День успешно отредактирован</h1><p class='point_desc'>Теперь вы можете перейти <a href='http://" . $_SERVER['HTTP_HOST'] ."'>на главную</a></p>";
 		}
 	}
 ?>
