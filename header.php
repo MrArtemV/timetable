@@ -39,7 +39,7 @@
                         </li>
                         <?php
                             if ($_SESSION['user'] != NULL) {
-                                echo "<li class='nav-item'><a class='nav-link' href='admin.php'>Панель управления</a></li>";
+                                echo "<li class='nav-item'><a class='nav-link' href='admin.php'>Панель управления</a></li><li class='nav-item'><a class='nav-link' href='profile.php'>Профиль</a></li>";
                             }
                         ?>
                         <li class="nav-item">
