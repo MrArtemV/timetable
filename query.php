@@ -92,7 +92,8 @@
 		}
 		else {
 			foreach ($data as $value) {
-				echo "<div class='point'><div class='point_title'><p class='name'>" . $value['name'] . "</p><i class='time'>" . $value['start'] . " - " .$value['end'] . "</i></div><div class='point_desc'><i>" . $value['homework'] . "</i></div></div>";
+				$hw = nl2br($value['homework']); // заменяет символ \n на тег <br>
+				echo "<div class='point'><div class='point_title'><p class='name'>" . $value['name'] . "</p><i class='time'>" . $value['start'] . " - " .$value['end'] . "</i></div><div class='point_desc'>" . $hw . "</div></div>";
 			}
 		}
 	}
