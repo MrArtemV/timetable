@@ -1,13 +1,13 @@
 <?php
 	require_once 'query.php';
-	if ($_SESSION['user'] != NULL) {
+	if (isset($_SESSION['user']) && $_SESSION['user'] != NULL) {
 		$host  = $_SERVER['HTTP_HOST'];
 		$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 		$extra = 'index.php';
 		header("Location: http://$host$uri/$extra");
 	}
 	else {
-		$mes = login($pdo, $_REQUEST['login'], $_REQUEST['password']);
+		$mes = login($pdo, @$_REQUEST['login'], @$_REQUEST['password']);
 	}
 	include 'header.php';
 ?>

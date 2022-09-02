@@ -15,7 +15,7 @@
 			<div class='main round pad_b_10'>
 				<div class='ml-3 mr-3'>
 					<?php
-						if ($_REQUEST['pass']) {
+						if (@$_REQUEST['pass']) {
 							$name = $_SESSION['user'];
 							$newpass = md5($_REQUEST['pass']);
 							$query = "UPDATE `users` SET `password` = '$newpass' WHERE `name` = '$name'";

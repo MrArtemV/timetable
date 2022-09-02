@@ -24,7 +24,7 @@
 		while ($result = $cat->fetch(PDO::FETCH_ASSOC)) {
 			$data[] = $result; // сбор результата запроса в один массив 
 		}
-		return $data; //возвращает всю инфу
+		return @$data; //возвращает всю инфу
 	}
 	$data = get_all($pdo, $nday);
 
@@ -116,7 +116,7 @@
 			}
 			else {
 				$_SESSION['user'] = $name;
-				echo $_SESSION['name'];
+				echo $_SESSION['user'];
 				header("Location: http://$host$uri/$extra");
 			}
 		}

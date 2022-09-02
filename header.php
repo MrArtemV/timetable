@@ -34,17 +34,14 @@
                 </div>
                 <div class="collapse navbar-collapse justify-content-center" id="nav-content">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="https://vk.com/club186200039">Группа ВК</a>
-                        </li>
                         <?php
-                            if ($_SESSION['user'] != NULL) {
+                            if (@$_SESSION['user'] != NULL) {
                                 echo "<li class='nav-item'><a class='nav-link' href='admin.php'>Панель управления</a></li><li class='nav-item'><a class='nav-link' href='profile.php'>Профиль</a></li>";
                             }
                         ?>
                         <li class="nav-item">
                             <?php
-                                if ($_SESSION['user'] == NULL) {
+                                if (@$_SESSION['user'] == NULL) {
                                     echo "<a class='nav-link' href='login.php'>Войти</a>";
                                 }
                                 else {
